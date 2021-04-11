@@ -1,0 +1,49 @@
+.analog-clock {
+  display: flex;
+  margin: 50px;
+  padding: 10px;
+  width: 100px;
+  height: 100px;
+  background: black;
+  border: solid 1px gray;
+  border-radius: 5px;
+  position: relative;
+  align-self: center;
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    position: absolute;
+    box-shadow: 0 2px 4px -1px black;
+  }
+
+  .hand {
+    position: absolute;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    transform-origin: bottom left;
+
+    &.seconds {
+      border-left: solid 2px yellow;
+    }
+
+    &.minutes {
+      border-left: solid 2px white;
+    }
+
+    &.hours {
+      width: 35px;
+      height: 35px;
+      top: 25px;
+      border-left: solid 2px white;
+    }
+  }
+}
