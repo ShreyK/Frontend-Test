@@ -9,25 +9,6 @@ const Clock = (props) => {
   const [isEdit, setEdit] = useState(false);
   const clockType = props.clockType;
 
-  const tick = () => {
-    props.setTime(moment(props.currentTime).add(1, "second"));
-    // setTime(moment());
-  };
-
-  useEffect(() => {
-    const intervalHandle = setInterval(tick, 1000);
-
-    return () => clearInterval(intervalHandle);
-  }, []);
-
-  const moveForward = () => {
-    props.setTime(moment(props.currentTime).add(1, "second"));
-  };
-
-  const moveBackward = () => {
-    props.setTime(moment(props.currentTime).subtract(1, "second"));
-  };
-
   const editDigitalClock = () => {
     if (!isEdit) {
       setEdit(!isEdit);
@@ -35,9 +16,9 @@ const Clock = (props) => {
   };
 
   const renderAnalogClock = () => {
-    let hours = moment(props.currentTime).hour();
-    let minutes = moment(props.currentTime).minute();
-    let seconds = moment(props.currentTime).seconds();
+    let hours = moment(props.time).hour();
+    let minutes = moment(props.time).minute();
+    let seconds = moment(props.time).seconds();
     let secondsHand = {
       transform: `rotate(${seconds * 6}deg)`,
     };
@@ -55,22 +36,28 @@ const Clock = (props) => {
           <div className="hand minutes" style={minutesHand}></div>
           <div className="hand hours" style={hoursHand}></div>
         </div>
-        <button onClick={moveForward}>Move Forward in Time</button>
-        <button onClick={moveBackward}>Move Backward in Time</button>
+        <button onClick={props.moveForward}>Move Forward in Time</button>
+        <button onClick={props.moveBackward}>Move Backward in Time</button>
       </div>
     );
   };
 
   const renderEditableDigitalClock = () => {
-    const time = props.currentTime;
     return (
       <div>
-        <input type="time" ref={editTimeRef}></input>
+        <input
+          type="time"
+          ref={editTimeRef}
+          defaultValue={moment(props.time).format("hh:mm")}
+        ></input>
         <button
           onClick={() => {
+            let editTime = editTimeRef.current.value;
+            let newTime = moment();
+            newTime.set("hour", editTime.split(":")[0]);
+            newTime.set("minute", editTime.split(":")[1]);
+            props.updateTime(newTime);
             setEdit(false);
-            console.log(moment(editTimeRef.current.value.toString()));
-            props.setTime(moment(editTimeRef.current.value));
           }}
         >
           Update Time
@@ -80,15 +67,15 @@ const Clock = (props) => {
   };
 
   const renderDigitalClock = () => {
-    let hours = moment(props.currentTime).hour();
-    let minutes = moment(props.currentTime).minute();
-    let seconds = moment(props.currentTime).seconds();
+    let hours = moment(props.time).hour();
+    let minutes = moment(props.time).minute();
+    let seconds = moment(props.time).seconds();
     return (
       <div className="digital-clock" onClick={editDigitalClock}>
         {isEdit ? (
           renderEditableDigitalClock()
         ) : (
-          <div>{moment(props.currentTime).format("LTS")}</div>
+          <div>{moment(props.time).format("LTS")}</div>
         )}
       </div>
     );

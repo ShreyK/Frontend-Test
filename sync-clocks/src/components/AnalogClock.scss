@@ -1,6 +1,7 @@
 .analog-clock {
   display: flex;
   margin: 50px;
+  margin-left: 100px;
   padding: 10px;
   width: 100px;
   height: 100px;
@@ -8,7 +9,6 @@
   border: solid 1px gray;
   border-radius: 5px;
   position: relative;
-  align-self: center;
 
   .dot {
     width: 10px;
@@ -46,4 +46,11 @@
       border-left: solid 2px white;
     }
   }
+}
+
+button {
+  background-color: black;
+  border-color: black;
+  color: white;
+  margin: 10px;
 }
